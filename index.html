@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitClinical — Calculadoras de Saúde & Performance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="28" rx="6" fill="#00C896"/>
+          <path d="M6 14h4l2-6 4 12 2-6h4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>FitClinical</span>
+      </div>
+      <nav class="calc-nav">
+        <a href="#imc" class="nav-link active" data-target="imc">IMC</a>
+        <a href="#tmb" class="nav-link" data-target="tmb">TMB</a>
+        <a href="#gordura" class="nav-link" data-target="gordura">% Gordura</a>
+        <a href="#fc" class="nav-link" data-target="fc">Freq. Cardíaca</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-content">
+      <p class="hero-eyebrow">Ferramentas clínicas & performance</p>
+      <h1 class="hero-title">Calcule.<br/><em>Avalie.</em><br/>Evolua.</h1>
+      <p class="hero-sub">Calculadoras de precisão para profissionais da saúde e atletas que levam o corpo a sério.</p>
+    </div>
+    <div class="hero-bg-lines" aria-hidden="true"></div>
+  </section>
+
+  <!-- CALCULADORAS -->
+  <main class="calcs-section" id="calculadoras">
+    <div class="container">
+
+      <!-- IMC -->
+      <div class="calc-card" id="imc">
+        <div class="calc-header">
+          <span class="calc-badge">01</span>
+          <div>
+            <h2 class="calc-title">Índice de Massa Corporal</h2>
+            <p class="calc-desc">Triagem rápida para classificação do peso corporal. Referência WHO/OMS.</p>
+          </div>
+        </div>
+        <div class="calc-body">
+          <div class="input-grid">
+            <div class="field-group">
+              <label for="imc-peso">Peso (kg)</label>
+              <input type="number" id="imc-peso" placeholder="Ex: 75" min="30" max="300" step="0.1" />
+            </div>
+            <div class="field-group">
+              <label for="imc-altura">Altura (cm)</label>
+              <input type="number" id="imc-altura" placeholder="Ex: 175" min="100" max="250" step="1" />
+            </div>
+          </div>
+          <button class="btn-calc" onclick="calcularIMC()">Calcular IMC</button>
+          <div class="result-panel" id="imc-result" hidden>
+            <div class="result-value-row">
+              <span class="result-number" id="imc-valor">—</span>
+              <span class="result-unit">kg/m²</span>
+            </div>
+            <div class="result-badge" id="imc-classe">—</div>
+            <div class="imc-scale">
+              <div class="scale-bar">
+                <div class="scale-fill" id="imc-fill"></div>
+                <div class="scale-marker" id="imc-marker"></div>
+              </div>
+              <div class="scale-labels">
+                <span>Abaixo</span><span>Normal</span><span>Sobrepeso</span><span>Obesidade</span>
+              </div>
+            </div>
+            <p class="result-note" id="imc-nota"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TMB -->
+      <div class="calc-card" id="tmb">
+        <div class="calc-header">
+          <span class="calc-badge">02</span>
+          <div>
+            <h2 class="calc-title">Taxa Metabólica Basal</h2>
+            <p class="calc-desc">Equação de Mifflin-St Jeor — padrão ouro para gasto energético em repouso.</p>
+          </div>
+        </div>
+        <div class="calc-body">
+          <div class="input-grid three-cols">
+            <div class="field-group">
+              <label for="tmb-peso">Peso (kg)</label>
+              <input type="number" id="tmb-peso" placeholder="75" min="30" max="300" step="0.1" />
+            </div>
+            <div class="field-group">
+              <label for="tmb-altura">Altura (cm)</label>
+              <input type="number" id="tmb-altura" placeholder="175" min="100" max="250" />
+            </div>
+            <div class="field-group">
+              <label for="tmb-idade">Idade (anos)</label>
+              <input type="number" id="tmb-idade" placeholder="30" min="10" max="100" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Sexo biológico</label>
+            <div class="toggle-group">
+              <button class="toggle-btn active" id="tmb-masc" onclick="selectSexo('M')">Masculino</button>
+              <button class="toggle-btn" id="tmb-fem" onclick="selectSexo('F')">Feminino</button>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="tmb-atividade">Nível de atividade física</label>
+            <select id="tmb-atividade">
+              <option value="1.2">Sedentário — sem exercício</option>
+              <option value="1.375">Levemente ativo — 1–3x/semana</option>
+              <option value="1.55" selected>Moderadamente ativo — 3–5x/semana</option>
+              <option value="1.725">Muito ativo — 6–7x/semana</option>
+              <option value="1.9">Extremamente ativo — atleta/trabalho físico</option>
+            </select>
+          </div>
+          <button class="btn-calc" onclick="calcularTMB()">Calcular TMB & TDEE</button>
+          <div class="result-panel" id="tmb-result" hidden>
+            <div class="tmb-cards">
+              <div class="tmb-mini-card">
+                <span class="mini-label">TMB (repouso)</span>
+                <span class="mini-value" id="tmb-valor">—</span>
+                <span class="mini-unit">kcal/dia</span>
+              </div>
+              <div class="tmb-mini-card accent">
+                <span class="mini-label">TDEE (total diário)</span>
+                <span class="mini-value" id="tdee-valor">—</span>
+                <span class="mini-unit">kcal/dia</span>
+              </div>
+            </div>
+            <div class="macro-targets" id="macro-targets">
+              <p class="macro-title">Metas calóricas por objetivo</p>
+              <div class="macro-row"><span>Perda de peso</span><span id="meta-perda">—</span></div>
+              <div class="macro-row"><span>Manutenção</span><span id="meta-manut">—</span></div>
+              <div class="macro-row accent-row"><span>Ganho de massa</span><span id="meta-ganho">—</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- % GORDURA -->
+      <div class="calc-card" id="gordura">
+        <div class="calc-header">
+          <span class="calc-badge">03</span>
+          <div>
+            <h2 class="calc-title">Percentual de Gordura Corporal</h2>
+            <p class="calc-desc">Método das Forças Armadas dos EUA (US Army) — circunferências corporais sem dobras cutâneas.</p>
+          </div>
+        </div>
+        <div class="calc-body">
+          <div class="field-group">
+            <label>Sexo biológico</label>
+            <div class="toggle-group">
+              <button class="toggle-btn active" id="gord-masc" onclick="selectSexoGord('M')">Masculino</button>
+              <button class="toggle-btn" id="gord-fem" onclick="selectSexoGord('F')">Feminino</button>
+            </div>
+          </div>
+          <div class="input-grid" id="gord-fields-m">
+            <div class="field-group">
+              <label for="gord-altura">Altura (cm)</label>
+              <input type="number" id="gord-altura" placeholder="175" min="100" max="250" />
+            </div>
+            <div class="field-group">
+              <label for="gord-pescoco">Pescoço (cm)</label>
+              <input type="number" id="gord-pescoco" placeholder="38" step="0.5" />
+            </div>
+            <div class="field-group">
+              <label for="gord-cintura">Cintura (cm)</label>
+              <input type="number" id="gord-cintura" placeholder="85" step="0.5" />
+            </div>
+          </div>
+          <div class="input-grid hidden" id="gord-fields-f">
+            <div class="field-group">
+              <label for="gord-altura-f">Altura (cm)</label>
+              <input type="number" id="gord-altura-f" placeholder="165" min="100" max="250" />
+            </div>
+            <div class="field-group">
+              <label for="gord-pescoco-f">Pescoço (cm)</label>
+              <input type="number" id="gord-pescoco-f" placeholder="34" step="0.5" />
+            </div>
+            <div class="field-group">
+              <label for="gord-cintura-f">Cintura (cm)</label>
+              <input type="number" id="gord-cintura-f" placeholder="75" step="0.5" />
+            </div>
+            <div class="field-group">
+              <label for="gord-quadril">Quadril (cm)</label>
+              <input type="number" id="gord-quadril" placeholder="95" step="0.5" />
+            </div>
+          </div>
+          <p class="field-hint">📏 Meça na parte mais estreita (cintura) e mais larga (quadril, feminino). Pescoço: abaixo da laringe.</p>
+          <button class="btn-calc" onclick="calcularGordura()">Calcular % Gordura</button>
+          <div class="result-panel" id="gord-result" hidden>
+            <div class="result-value-row">
+              <span class="result-number" id="gord-valor">—</span>
+              <span class="result-unit">%</span>
+            </div>
+            <div class="result-badge" id="gord-classe">—</div>
+            <div class="fat-breakdown" id="fat-breakdown"></div>
+            <p class="result-note" id="gord-nota"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FREQUÊNCIA CARDÍACA -->
+      <div class="calc-card" id="fc">
+        <div class="calc-header">
+          <span class="calc-badge">04</span>
+          <div>
+            <h2 class="calc-title">Frequência Cardíaca & Zonas de Treino</h2>
+            <p class="calc-desc">FCmáx pela fórmula de Tanaka et al. + 5 zonas de intensidade baseadas em % da FC.</p>
+          </div>
+        </div>
+        <div class="calc-body">
+          <div class="input-grid">
+            <div class="field-group">
+              <label for="fc-idade">Idade (anos)</label>
+              <input type="number" id="fc-idade" placeholder="30" min="10" max="100" />
+            </div>
+            <div class="field-group">
+              <label for="fc-repouso">FC em Repouso (bpm) <span class="optional">opcional</span></label>
+              <input type="number" id="fc-repouso" placeholder="60" min="30" max="120" />
+            </div>
+          </div>
+          <button class="btn-calc" onclick="calcularFC()">Calcular Zonas</button>
+          <div class="result-panel" id="fc-result" hidden>
+            <div class="fc-header-row">
+              <div class="fc-stat">
+                <span class="fc-label">FCmáx</span>
+                <span class="fc-val" id="fc-max">—</span>
+                <span class="fc-unit">bpm</span>
+              </div>
+              <div class="fc-stat" id="fc-reserva-block">
+                <span class="fc-label">FC Reserva</span>
+                <span class="fc-val" id="fc-reserva">—</span>
+                <span class="fc-unit">bpm</span>
+              </div>
+            </div>
+            <div class="zones-table" id="zones-table"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="logo">
+        <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#00C896"/><path d="M6 14h4l2-6 4 12 2-6h4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>FitClinical</span>
+      </div>
+      <p class="footer-note">Calculadoras baseadas em evidências científicas. Não substituem avaliação médica ou nutricional individualizada.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
