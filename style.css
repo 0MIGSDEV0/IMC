@@ -1,51 +1,204 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f2027, #2c5364);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  font-family: 'Space Grotesk', sans-serif;
+  background: #0a0a0f;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.container {
-    background: #1c1c1c;
-    padding: 30px;
-    border-radius: 15px;
-    width: 350px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+.bg {
+  min-height: 560px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: #0f0f1a;
+  border: 1px solid #2a2a3f;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
 }
 
-.form input, .form select {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 8px;
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00ffe5, #bf00ff, #00ffe5);
+  background-size: 200%;
+  animation: slide 3s linear infinite;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    background: #00c853;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+@keyframes slide {
+  0%   { background-position: 0%; }
+  100% { background-position: 200%; }
 }
 
-button:hover {
-    background: #00e676;
+.card-head {
+  padding: 1.75rem 1.75rem 1.25rem;
+  text-align: center;
 }
 
-#resultado {
-    margin-top: 20px;
-    text-align: center;
+.neon-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 8px #00ffe5, 0 0 20px #00ffe580;
+  letter-spacing: 0.04em;
+}
+
+.neon-sub {
+  font-size: 13px;
+  color: #6b7a99;
+  margin-top: 4px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #2a2a3f, transparent);
+  margin: 0 1.75rem;
+}
+
+.card-body {
+  padding: 1.5rem 1.75rem;
+}
+
+.field {
+  margin-bottom: 1.1rem;
+}
+
+.field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b7a99;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  font-size: 15px;
+  font-family: 'Space Grotesk', sans-serif;
+  padding: 11px 14px;
+  border: 1px solid #2a2a3f;
+  border-radius: 10px;
+  background: #14141f;
+  color: #e0e8ff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #00ffe580;
+  box-shadow: 0 0 0 3px #00ffe515;
+}
+
+.field select option {
+  background: #14141f;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.suffix {
+  position: relative;
+}
+
+.suffix span {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: #6b7a99;
+  pointer-events: none;
+}
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  background: linear-gradient(135deg, #00ffe5, #bf00ff);
+  color: #0a0a0f;
+  transition: opacity 0.15s, transform 0.1s;
+  text-transform: uppercase;
+}
+
+.btn:hover {
+  opacity: 0.88;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.result {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 14px;
+  border: 1px solid #2a2a3f;
+  background: #14141f;
+  display: none;
+  text-align: center;
+}
+
+.imc-num {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.imc-label {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.bar-track {
+  height: 8px;
+  border-radius: 4px;
+  background: #1e1e2e;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.imc-detail {
+  font-size: 12px;
+  color: #6b7a99;
 }
