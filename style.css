@@ -1,204 +1,76 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+function calcIMC() {
+  const p = parseFloat(document.getElementById('peso').value);
+  const h = parseFloat(document.getElementById('altura').value) / 100;
 
-body {
-  font-family: 'Space Grotesk', sans-serif;
-  background: #0a0a0f;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  if (!p || !h || h <= 0) return;
 
-.bg {
-  min-height: 560px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
+  const imc = p / (h * h);
+  const r = document.getElementById('resultado');
+  r.style.display = 'block';
+  document.getElementById('imcVal').textContent = imc.toFixed(1);
 
-.card {
-  width: 100%;
-  max-width: 400px;
-  background: #0f0f1a;
-  border: 1px solid #2a2a3f;
-  border-radius: 20px;
-  overflow: hidden;
-  position: relative;
-}
+  let label, color, glow, pct, detail;
 
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #00ffe5, #bf00ff, #00ffe5);
-  background-size: 200%;
-  animation: slide 3s linear infinite;
-}
+  if (imc < 18.5) {
+    label  = 'Abaixo do peso';
+    color  = '#00c8ff';
+    glow   = '#00c8ff';
+    pct    = Math.max(5, imc / 18.5 * 28);
+    detail = 'IMC abaixo de 18,5 · Consulte um nutricionista';
+  } else if (imc < 25) {
+    label  = 'Peso normal';
+    color  = '#00ff88';
+    glow   = '#00ff88';
+    pct    = 28 + (imc - 18.5) / 6.5 * 24;
+    detail = 'IMC entre 18,5 e 24,9 · Parabéns, continue assim!';
+  } else if (imc < 30) {
+    label  = 'Sobrepeso';
+    color  = '#ffe600';
+    glow   = '#ffe600';
+    pct    = 52 + (imc - 25) / 5 * 20;
+    detail = 'IMC entre 25 e 29,9 · Atenção à alimentação e exercícios';
+  } else if (imc < 35) {
+    label  = 'Obesidade grau I';
+    color  = '#ff8800';
+    glow   = '#ff8800';
+    pct    = 72 + (imc - 30) / 5 * 14;
+    detail = 'IMC entre 30 e 34,9 · Recomenda-se acompanhamento médico';
+  } else {
+    label  = 'Obesidade grau II+';
+    color  = '#ff2d55';
+    glow   = '#ff2d55';
+    pct    = Math.min(98, (imc - 35) / 10 * 14 + 86);
+    detail = 'IMC acima de 35 · Busque orientação médica urgente';
+  }
 
-@keyframes slide {
-  0%   { background-position: 0%; }
-  100% { background-position: 200%; }
-}
+  const numEl = document.getElementById('imcVal');
+  numEl.style.cssText = `
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+    color: ${color};
+    text-shadow: 0 0 12px ${glow}, 0 0 30px ${glow}80;
+  `;
 
-.card-head {
-  padding: 1.75rem 1.75rem 1.25rem;
-  text-align: center;
-}
+  const lblEl = document.getElementById('imcLabel');
+  lblEl.textContent = label;
+  lblEl.style.cssText = `
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    margin-bottom: 12px;
+    color: ${color};
+  `;
 
-.neon-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 0 8px #00ffe5, 0 0 20px #00ffe580;
-  letter-spacing: 0.04em;
-}
+  const bar = document.getElementById('barFill');
+  bar.style.cssText = `
+    height: 100%;
+    border-radius: 4px;
+    width: ${Math.min(pct, 100)}%;
+    background: ${color};
+    box-shadow: 0 0 8px ${glow};
+  `;
 
-.neon-sub {
-  font-size: 13px;
-  color: #6b7a99;
-  margin-top: 4px;
-}
-
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #2a2a3f, transparent);
-  margin: 0 1.75rem;
-}
-
-.card-body {
-  padding: 1.5rem 1.75rem;
-}
-
-.field {
-  margin-bottom: 1.1rem;
-}
-
-.field label {
-  display: block;
-  font-size: 11px;
-  font-weight: 500;
-  color: #6b7a99;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 6px;
-}
-
-.field input,
-.field select {
-  width: 100%;
-  font-size: 15px;
-  font-family: 'Space Grotesk', sans-serif;
-  padding: 11px 14px;
-  border: 1px solid #2a2a3f;
-  border-radius: 10px;
-  background: #14141f;
-  color: #e0e8ff;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.field input:focus,
-.field select:focus {
-  border-color: #00ffe580;
-  box-shadow: 0 0 0 3px #00ffe515;
-}
-
-.field select option {
-  background: #14141f;
-}
-
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.suffix {
-  position: relative;
-}
-
-.suffix span {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 13px;
-  color: #6b7a99;
-  pointer-events: none;
-}
-
-.btn {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 12px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  background: linear-gradient(135deg, #00ffe5, #bf00ff);
-  color: #0a0a0f;
-  transition: opacity 0.15s, transform 0.1s;
-  text-transform: uppercase;
-}
-
-.btn:hover {
-  opacity: 0.88;
-}
-
-.btn:active {
-  transform: scale(0.98);
-}
-
-.result {
-  margin-top: 1.25rem;
-  padding: 1.25rem;
-  border-radius: 14px;
-  border: 1px solid #2a2a3f;
-  background: #14141f;
-  display: none;
-  text-align: center;
-}
-
-.imc-num {
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 1;
-  margin-bottom: 6px;
-}
-
-.imc-label {
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  margin-bottom: 12px;
-}
-
-.bar-track {
-  height: 8px;
-  border-radius: 4px;
-  background: #1e1e2e;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-
-.bar-fill {
-  height: 100%;
-  border-radius: 4px;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.imc-detail {
-  font-size: 12px;
-  color: #6b7a99;
+  document.getElementById('imcDetail').textContent = detail;
 }
